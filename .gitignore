@@ -27,6 +27,9 @@ pids/
 *.pid.lock
 
 # IDE
+.vscode/*.log
+.vscode/*.tmp
+.vscode/*.pid
 .idea/
 .vscode/
 *.swp

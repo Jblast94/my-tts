@@ -5,7 +5,7 @@ This is a Text-to-Speech Knowledge API service that utilizes PostgreSQL for data
 ## Prerequisites
 
 - Docker and Docker Compose
-- Node.js (recommended version 14+)
+- Python (recommended version 14+)
 
 > **Note**: PostgreSQL and Redis do not need to be installed locally as they run in Docker containers.
 
@@ -37,13 +37,13 @@ git push -u origin main
 git remote -v
 ```
 
-## Node.js Installation Guide
+## Python Installation Guide
 
-### Cleaning Up Existing Node.js Installation
-If you're experiencing issues with existing Node.js installations:
+### Cleaning Up Existing Python Installation
+If you're experiencing issues with existing Python installations:
 
 1. Windows:
-   - Uninstall Node.js from Control Panel
+   - Uninstall Python from Control Panel
    - Delete these folders if they exist:
      ```
      C:\Program Files\nodejs
@@ -51,7 +51,7 @@ If you're experiencing issues with existing Node.js installations:
      %AppData%\npm
      %AppData%\npm-cache
      ```
-   - Remove Node.js paths from System Environment Variables
+   - Remove Python paths from System Environment Variables
 
 2. Install Node Version Manager (recommended):
    - Windows: Install [nvm-windows](https://github.com/coreybutler/nvm-windows)
@@ -123,8 +123,8 @@ The API is protected using an API key authentication. Make sure to:
 
 To start the development server:
 ```bash
-npm install
-npm run dev
+pip install -r requirements.txt
+uvicorn main:app --reload
 ```
 
 ## Production

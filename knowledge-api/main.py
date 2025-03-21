@@ -1,10 +1,14 @@
 from fastapi import FastAPI, HTTPException, Depends, Header, WebSocket, WebSocketDisconnect
 from fastapi.security import APIKeyHeader
 from redis import Redis
+  # type: ignore
 from sqlalchemy import create_engine
+  # type: ignore
 from sqlalchemy.orm import sessionmaker, Session
+  # type: ignore
 import os
 from models import Base, TTSRequest
+from models import ChatMessage
 from tts_service import TTSService
 from typing import List
 import json

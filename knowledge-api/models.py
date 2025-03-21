@@ -13,7 +13,7 @@ class TTSRequest(Base):
     status = Column(String(20), default="pending")
     created_at = Column(DateTime, default=datetime.utcnow)
     audio_path = Column(String(255))
-    user_id = Column(String(50), nullable=False
+    user_id = Column(String(50), nullable=False)
 
 class ChatMessage(Base):
     __tablename__ = "chat_messages"
