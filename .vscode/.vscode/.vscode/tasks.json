@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Build Docker Stack",
+        "type": "shell",
+        "command": "docker compose build",
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
+      },
+      {
+        "label": "Run Migrations",
+        "type": "shell",
+        "command": "docker compose run knowledge-api alembic upgrade head"
+      }
+    ]
+  }

@@ -1,0 +1,174 @@
+Here's a VS Code project setup with a tailored coding assistant prompt and configuration files:
+
+**1. Project Structure**
+```
+my-tts-project/
+├── .vscode/
+│   ├── settings.json
+│   ├── extensions.json
+│   ├── tasks.json
+│   └── launch.json
+├── docker-compose.yml
+├── knowledge-api/
+│   └── ... (your existing API code)
+└── prompt.txt
+```
+
+**2. `prompt.txt` for Coding Assistant**
+```txt
+You are a senior AI engineer specializing in TTS systems and infrastructure. 
+Your expertise includes:
+- Docker container orchestration
+- FastAPI/Python development
+- PostgreSQL database optimization
+- TTS model integration (Orpheus/Fish-Speech)
+- Real-time streaming APIs
+- GPU resource management
+
+When responding:
+1. Provide code snippets with explanations
+2. Suggest best practices for production deployment
+3. Explain infrastructure decisions
+4. Offer debugging strategies for common issues
+5. Use docker-compose patterns where applicable
+6. Prioritize maintainability and scalability
+7. Include security considerations
+
+Current stack:
+- Orpheus TTS (NVIDIA GPU optimized)
+- Fish-Speech API
+- PostgreSQL knowledge base
+- FastAPI CRUD services
+- Swagger UI documentation
+
+Please help me implement features, debug issues, and optimize this TTS infrastructure.
+```
+
+**3. VS Code Configuration Files**
+
+`.vscode/settings.json`:
+```json
+{
+  "python.defaultInterpreterPath": "python3",
+  "docker.showStartPage": false,
+  "editor.suggestSelection": "first",
+  "python.languageServer": "Pylance",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/__pycache__": true
+  }
+}
+```
+
+`.vscode/extensions.json`:
+```json
+{
+  "recommendations": [
+    "ms-python.python",
+    "ms-azuretools.vscode-docker",
+    "redhat.vscode-yaml",
+    "postgresql.postgresql",
+    "swagger-api.swagger-ui"
+  ]
+}
+```
+
+`.vscode/tasks.json`:
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Docker Stack",
+      "type": "shell",
+      "command": "docker compose build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Run Migrations",
+      "type": "shell",
+      "command": "docker compose run knowledge-api alembic upgrade head"
+    }
+  ]
+}
+```
+
+`.vscode/launch.json`:
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: FastAPI",
+      "type": "python",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["main:app", "--reload"],
+      "cwd": "${workspaceFolder}/knowledge-api"
+    }
+  ]
+}
+```
+
+**4. Usage Instructions**
+
+1. **Workspace Setup**:
+   - Open the folder in VS Code
+   - Install recommended extensions when prompted
+   - Save `prompt.txt` content to your clipboard
+
+2. **Using the Coding Assistant**:
+   - Open any code file
+   - Use the command palette (`Ctrl+Shift+P`) → "AI: Start Chat Session"
+   - Paste the prompt from `prompt.txt` as your initial context
+   - Example query: "How do I optimize the Orpheus TTS service for multi-user requests?"
+
+3. **Common Tasks**:
+   - `Ctrl+Shift+B` → Build Docker containers
+   - `F5` → Debug FastAPI service
+   - `Ctrl+Shift+P` → "Docker: Compose Up"
+
+**5. Example Assistant Interaction**
+
+**User**: "How do I add Redis caching to the knowledge API?"
+
+**Assistant Response**:
+```python
+# Step 1: Update docker-compose.yml
+# Add redis service:
+# redis:
+#   image: redis:7.0
+#   ports: ["6379:6379"]
+
+# Step 2: Modify knowledge-api/main.py
+from fastapi import Depends
+from redis import Redis
+
+app = FastAPI()
+redis_client = Redis(host="redis", port=6379)
+
+@app.get("/memory/{user_id}/{key}")
+def get_memory(user_id: str, key: str):
+    # Check cache first
+    cache_key = f"{user_id}:{key}"
+    cached_value = redis_client.get(cache_key)
+    if cached_value:
+        return cached_value.decode()
+    
+    # DB lookup if cache miss
+    with get_db() as conn:
+        # ... existing DB code ...
+        redis_client.set(cache_key, result['value'], ex=3600)
+    return result['value']
+```
+
+**Tips**:
+- Use `@app.on_event("startup")` for connection pooling
+- Add cache invalidation strategies
+- Implement circuit breakers for Redis failures
+
+Would you like me to add specific configurations or modify any components of this VS Code setup?

@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  knowledge-api:
+    build: ./knowledge-api
+    ports:
+      - "8000:8000"
+      - "8001:8001"  # WebSocket port
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/tts_knowledge
+      - REDIS_URL=redis://redis:6379
+      - API_KEY=${API_KEY:-your-secret-key}
+    depends_on:
+      - db
+      - redis
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  db:
+    image: postgres:14
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=tts_knowledge
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_data:
